@@ -92,31 +92,34 @@ export function Header() {
         </button>
       </div>
 
-      <div
-        id={menuId}
-        hidden={!open}
-        className="border-t border-white/8 bg-ink md:hidden"
-      >
-        <nav aria-label="Mobile" className="flex flex-col gap-1 px-5 py-4">
-          {links.map((link) => (
+      {open ? (
+        <div
+          id={menuId}
+          className="fixed inset-x-0 top-16 bottom-0 z-50 border-t border-white/8 bg-ink md:hidden"
+        >
+          <nav aria-label="Mobile" className="flex flex-col gap-1 px-5 py-6">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-sm px-2 py-3 text-lg text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
             <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-sm px-2 py-3 text-base text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              href="/book"
+              className="mt-3 rounded-sm bg-gold px-3 py-3 text-center text-lg font-medium text-ink"
               onClick={() => setOpen(false)}
             >
-              {link.label}
+              Book a sprint
             </Link>
-          ))}
-          <Link
-            href="/book"
-            className="mt-2 rounded-sm bg-gold px-3 py-3 text-center text-base font-medium text-ink"
-            onClick={() => setOpen(false)}
-          >
-            Book a sprint
-          </Link>
-        </nav>
-      </div>
+          </nav>
+        </div>
+      ) : (
+        <div id={menuId} hidden className="md:hidden" />
+      )}
     </header>
   );
 }

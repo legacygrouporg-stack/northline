@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { InquiryForm } from "@/components/InquiryForm";
-import { packages } from "@/lib/packages";
+import { isPackageSlug, packages } from "@/lib/packages";
 
 export const metadata: Metadata = {
   title: "Book",
@@ -9,7 +8,14 @@ export const metadata: Metadata = {
     "Book a Northline sprint, board pack, or retainer. Payment via Paystack or Stripe hosted checkout only — never bank details on this site.",
 };
 
-export default function BookPage() {
+export default async function BookPage({ searchParams }: PageProps<"/book">) {
+  const params = await searchParams;
+  const requested = Array.isArray(params.package)
+    ? params.package[0]
+    : params.package;
+  const initialPackage =
+    requested && isPackageSlug(requested) ? requested : "launch-sprint";
+
   return (
     <main
       id="main"
@@ -29,7 +35,10 @@ export default function BookPage() {
         </p>
         <ul className="mt-8 space-y-3 text-sm text-muted">
           {packages.map((item) => (
-            <li key={item.slug} className="flex justify-between gap-4 border-b border-white/8 pb-3">
+            <li
+              key={item.slug}
+              className="flex justify-between gap-4 border-b border-white/8 pb-3"
+            >
               <span className="text-text">{item.name}</span>
               <span className="font-mono text-gold">
                 {item.price}
@@ -41,15 +50,7 @@ export default function BookPage() {
       </div>
 
       <div className="border border-white/10 bg-panel p-5 sm:p-8">
-        <Suspense
-          fallback={
-            <p className="text-sm text-muted" role="status">
-              Loading form…
-            </p>
-          }
-        >
-          <InquiryForm />
-        </Suspense>
+        <InquiryForm initialPackage={initialPackage} />
       </div>
     </main>
   );
