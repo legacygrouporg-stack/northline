@@ -3,8 +3,16 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SiteJsonLd } from "@/components/SiteJsonLd";
-import { siteConfig } from "@/lib/site";
+import { FALLBACK_SITE_URL, siteConfig } from "@/lib/site";
 import "./globals.css";
+
+function siteMetadataBase(): URL {
+  try {
+    return new URL(siteConfig.url);
+  } catch {
+    return new URL(FALLBACK_SITE_URL);
+  }
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +31,7 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: siteMetadataBase(),
   title: {
     default: "Northline — Brand & launch systems",
     template: "%s — Northline",

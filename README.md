@@ -59,14 +59,14 @@ If neither path is configured, the form still validates and shows a success stat
 
    | Name | Required | Notes |
    | --- | --- | --- |
-   | `NEXT_PUBLIC_SITE_URL` | Yes for SEO | Canonical origin, e.g. `https://northline.yourdomain.com` (no trailing slash) |
+   | `NEXT_PUBLIC_SITE_URL` | Optional | Canonical origin, e.g. `https://northline.yourdomain.com` (no trailing slash). Empty or invalid values are ignored. If unset, the build uses `VERCEL_URL` when present, otherwise `https://northline.vercel.app`. |
    | `INQUIRY_WEBHOOK_URL` | One of webhook or Resend | HTTPS endpoint that accepts POST JSON |
    | `RESEND_API_KEY` | If using email | From the Resend dashboard |
    | `RESEND_FROM_EMAIL` | If using email | A verified sender, e.g. `Northline <hello@yourdomain.com>` |
    | `INQUIRY_TO_EMAIL` | If using email | Inbox that should receive briefs |
    | `NEXT_PUBLIC_CONTACT_EMAIL` | Optional | Shown on `/book` as a public address |
 
-5. Deploy. After the first production URL exists, set `NEXT_PUBLIC_SITE_URL` to that URL (or your custom domain) and redeploy so Open Graph, sitemap, and JSON-LD use the live origin.
+5. Deploy. Production builds succeed without env vars. After the first production URL exists, set `NEXT_PUBLIC_SITE_URL` to that URL (or your custom domain) and redeploy so Open Graph, sitemap, and JSON-LD use the live origin.
 6. Add a custom domain in Vercel → Project → Settings → Domains. Point DNS as Vercel instructs.
 7. Open `/`, `/about`, and `/book` on the production URL. Submit a test brief and confirm it arrives via webhook or email.
 8. Checkout links (Paystack or Stripe hosted pages) are sent in the reply — they are not collected on this form.
